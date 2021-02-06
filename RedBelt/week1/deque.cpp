@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
-//#include "test_runner.h"
+#include "test_runner.h"
 
 using namespace std;
 
@@ -148,57 +148,57 @@ void Deque<T>::PushBack(const T& el){
 }
 
 
-// void TestDeque(){
-//     Deque<int> deq;
-//     ASSERT_EQUAL(deq.Size(), 0u);
-//     ASSERT(deq.Empty());
+void TestDeque(){
+    Deque<int> deq;
+    ASSERT_EQUAL(deq.Size(), 0u);
+    ASSERT(deq.Empty());
 
-//     deq.PushBack(3);
-//     deq.PushBack(4);
-//     ASSERT_EQUAL(deq.Size(), 2u);
-//     ASSERT_EQUAL(deq.Front(), 3u);
+    deq.PushBack(3);
+    deq.PushBack(4);
+    ASSERT_EQUAL(deq.Size(), 2u);
+    ASSERT_EQUAL(deq.Front(), 3u);
 
-//     Deque<int> deq1;
-//     deq1.PushFront(2);
-//     deq1.PushFront(1);
-//     ASSERT_EQUAL(deq1.Size(), 2u);
-//     ASSERT_EQUAL(deq1.Back(), 2u);
+    Deque<int> deq1;
+    deq1.PushFront(2);
+    deq1.PushFront(1);
+    ASSERT_EQUAL(deq1.Size(), 2u);
+    ASSERT_EQUAL(deq1.Back(), 2u);
 
-//     deq.PushFront(2);
-//     deq.PushFront(1);
-//     ASSERT_EQUAL(deq.Size(), 4u);
+    deq.PushFront(2);
+    deq.PushFront(1);
+    ASSERT_EQUAL(deq.Size(), 4u);
 
-//     ASSERT_EQUAL(deq[0], 1u);
-//     ASSERT_EQUAL(deq[1], 2u);
-//     ASSERT_EQUAL(deq[2], 3u);
-//     ASSERT_EQUAL(deq[3], 4u);
+    ASSERT_EQUAL(deq[0], 1u);
+    ASSERT_EQUAL(deq[1], 2u);
+    ASSERT_EQUAL(deq[2], 3u);
+    ASSERT_EQUAL(deq[3], 4u);
 
-//     ASSERT_EQUAL(deq.Front(), 1u);
-//     ASSERT_EQUAL(deq.Back(), 4u);
-
-
-//     ASSERT_EQUAL(deq.At(0), 1u);
-//     ASSERT_EQUAL(deq.At(1), 2u);
-//     ASSERT_EQUAL(deq.At(2), 3u);
-//     ASSERT_EQUAL(deq.At(3), 4u);
-
-//     Deque<int> deq3;
-//     deq3.PushFront(5);
-//     deq3.PushFront(4);
-//     deq3.PushFront(3);
-//     deq3.PushFront(2);
-//     deq3.PushFront(1);
-//   //  deq3.Back()=1;
-//     std::cout<<deq3[4]<<'\n';
-// }
+    ASSERT_EQUAL(deq.Front(), 1u);
+    ASSERT_EQUAL(deq.Back(), 4u);
 
 
+    ASSERT_EQUAL(deq.At(0), 1u);
+    ASSERT_EQUAL(deq.At(1), 2u);
+    ASSERT_EQUAL(deq.At(2), 3u);
+    ASSERT_EQUAL(deq.At(3), 4u);
 
-// int main() {
-// 	TestRunner tr;
-// 	RUN_TEST(tr, TestDeque);
-// 	return 0;
-// }
+    Deque<int> deq3;
+    deq3.PushFront(5);
+    deq3.PushFront(4);
+    deq3.PushFront(3);
+    deq3.PushFront(2);
+    deq3.PushFront(1);
+    deq3.Front()=1;
+    std::cout<<deq3[0]<<'\n';
+}
+
+
+
+int main() {
+	TestRunner tr;
+	RUN_TEST(tr, TestDeque);
+	return 0;
+}
 
 
 
