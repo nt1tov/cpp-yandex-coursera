@@ -18,11 +18,9 @@ public:
   void Paste();
   string GetText() const;
 private:
-
   list<char> data;
   list<char>::iterator cursor;
   list<char> buff;
-
 };
 
 Editor::Editor():

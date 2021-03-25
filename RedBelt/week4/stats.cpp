@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 HttpRequest ParseRequest(string_view line){
     HttpRequest req;
     line = line.substr(line.find_first_not_of(' '));
@@ -58,6 +57,7 @@ void Stats::AddUri(string_view uri){
 const map<string_view, int>& Stats::GetMethodStats() const{
     return method_stats;
 }
+
 const map<string_view, int>& Stats::GetUriStats() const{
     return uri_stats;
 }
