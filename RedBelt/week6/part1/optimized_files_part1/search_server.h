@@ -17,13 +17,18 @@ using namespace std;
 
 class InvertedIndex {
 public:
+
+  InvertedIndex(){
+    docs_count = 0;
+  }
   void operator=(InvertedIndex&& other){
-    cout << "move assignment" << endl;
-    index = move(other.index);
+    //cout << "move assignment" << endl;
+    //index = move(other.index);
+    swap(index, other.index);
     docs_count = other.docs_count;
   }
   //void Add(const string& document);
-  void Add(string document);
+  void Add(string&& document);
   const vector<pair<size_t, size_t>>& Lookup(const string& word) const;
 
   // const string& GetDocument(size_t id) const {

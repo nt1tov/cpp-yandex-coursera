@@ -237,7 +237,7 @@ void TestLoad() {
 	std::uniform_int_distribution<size_t> line_len_gen(1000, 1000); //max 1000 words in 1 doc
 
 	ofstream text_out("docs_input.txt");
-	for (int line = 0; line < 80; ++line) { //50000 docs max
+	for (int line = 0; line < 800; ++line) { //50000 docs max
 		ostringstream line_out;
 		auto line_len = line_len_gen(rd);
 		for (size_t i = 0; i < line_len; ++i) {
@@ -250,7 +250,7 @@ void TestLoad() {
 
 	std::uniform_int_distribution<size_t> q_line_len_gen(10, 10); // [1; 10] words in query
 	ofstream query_out("queries_input.txt");
-	for (int line = 0; line < 300; ++line) { //500000 queries max
+	for (int line = 0; line < 3000; ++line) { //500000 queries max
 		ostringstream line_out;
 		auto line_len = q_line_len_gen(rd);
 		for (size_t i = 0; i < line_len; ++i) {
