@@ -25,14 +25,17 @@ void SearchServer::UpdateDocumentBase(istream& document_input) {
 }
 
 //iterate oves queriies, check hitcount of query words in documents
-void SearchServer::AddQueriesStream(
-  istream& query_input, ostream& search_results_output
-) {
-
+//template<typename Iterator>
+void ThreadQuery(
+  const InvertedIndex& index,
+  Part<vector<string>::iterator> batch,
+  string& search_result_str
+  ){
+  stringstream search_results_output;
   vector<pair<size_t, size_t>>  docid_counter(index.DocCount(), {0,0});
-  for (string current_query; getline(query_input, current_query); ) {
-    search_results_output << current_query << ':';
-    const auto words = SplitIntoWords((current_query));
+  for (auto& query: batch) {
+    search_results_output << query << ':';
+    const auto words = SplitIntoWords(query);
     docid_counter.assign(docid_counter.size(), pair<size_t, size_t>(0,0));
 
     for (const auto& word : words) {
@@ -57,6 +60,29 @@ void SearchServer::AddQueriesStream(
     }
     search_results_output << endl;
   }
+  search_result_str = move(search_results_output.str());
+}
+
+void SearchServer::AddQueriesStream(
+  istream& query_input, ostream& search_results_output
+) {
+
+  vector<pair<size_t, size_t>>  docid_counter(index.DocCount(), {0,0});
+  vector<string> queries;
+  for(string current_query; getline(query_input, current_query);){
+    queries.push_back(move(current_query));
+  }
+  vector<string> res(queries.size());
+  auto qbatches = CreatePartitioner(queries, 10);
+  auto i = 0;
+  for(auto &qbatch : qbatches){
+    ThreadQuery(index, qbatch, res[i]);
+    ++i;
+  }
+  for(auto i = 0; i < res.size(); ++i){
+    search_results_output << res[i];
+  }
+
 }
 
 
