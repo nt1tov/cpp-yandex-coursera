@@ -5,14 +5,38 @@
 #include <set>
 #include <list>
 #include <vector>
-#include <map>
 #include <unordered_map>
 #include <string>
 #include <iostream>
-#include <deque>
+#include <mutex>
+#include <thread>
+#include <future>
+#include <iterator>
+#include <sstream>
+#include <iostream>
+#include <numeric>
 
 using namespace std;
+template <typename T>
+class Synchronized {
+public:
+  explicit Synchronized(T initial = T()):
+    value(move(initial))
+  {
+  }
 
+  struct Access {
+    lock_guard<mutex> g;
+    T& ref_to_value;
+  };
+
+  Access GetAccess(){
+    return Access{lock_guard(m), value};
+  }
+private:
+  T value;
+  mutex m;
+};
 
 template <typename Iterator>
 class Part {
@@ -78,6 +102,11 @@ public:
   InvertedIndex(){
     docs_count = 0;
   }
+
+  InvertedIndex(InvertedIndex&& other){
+    swap(index, other.index);
+    docs_count = other.docs_count;
+  }
   void operator=(InvertedIndex&& other){
     //cout << "move assignment" << endl;
     //index = move(other.index);
@@ -117,33 +146,9 @@ public:
   void AddQueriesStream(istream& query_input, ostream& search_results_output);
 
 private:
-  InvertedIndex index;
+  Synchronized<InvertedIndex> _index;
+  bool _first_update = true;
+  vector<future<void>> _server_futures;
 };
 
-template <typename T>
-class Synchronized {
-public:
-  explicit Synchronized(T initial = T()):
-    value(move(initial))
-  {
-  }
 
-  struct Access {
-    lock_guard<mutex> g;
-    T& ref_to_value;
-  };
-
-  Access GetAccess(){
-    return Access{lock_guard(m), value};
-  }
-private:
-  T value;
-  mutex m;
-};
-
-/*
-AddQuerie вот тут попробуй Synchronized<InvertedIndex> const & index.
-Тут for (const pair<int, size_t>& entry - тоже.
-и тут vector<pair<size_t, size_t>> InvertedIndex::Lookup переделай чтобы возвращаемый 
-тип был const vector<pair<size_t, size_t>>&
-*/

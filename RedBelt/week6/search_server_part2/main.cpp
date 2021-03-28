@@ -23,11 +23,13 @@ void TestFunctionality(
 ) {
   istringstream docs_input(Join('\n', docs));
   istringstream queries_input(Join('\n', queries));
+   ostringstream queries_output;
+  {
+    SearchServer srv;
+    srv.UpdateDocumentBase(docs_input);
+    srv.AddQueriesStream(queries_input, queries_output);
+  }
 
-  SearchServer srv;
-  srv.UpdateDocumentBase(docs_input);
-  ostringstream queries_output;
-  srv.AddQueriesStream(queries_input, queries_output);
 
   const string result = queries_output.str();
   const auto lines = SplitBy(Strip(result), '\n');
@@ -239,7 +241,8 @@ void TestLoad() {
 	ofstream text_out("docs_input.txt");
 	for (int line = 0; line < 800; ++line) { //50000 docs max
 		ostringstream line_out;
-		auto line_len = line_len_gen(rd);
+		//auto line_len = line_len_gen(rd);
+    auto line_len = 50;
 		for (size_t i = 0; i < line_len; ++i) {
 			std::uniform_int_distribution<size_t> word_index(0, key_words.size() - 1);
 			line_out << key_words[word_index(rd)];
@@ -250,9 +253,10 @@ void TestLoad() {
 
 	std::uniform_int_distribution<size_t> q_line_len_gen(10, 10); // [1; 10] words in query
 	ofstream query_out("queries_input.txt");
-	for (int line = 0; line < 3000; ++line) { //500000 queries max
+	for (int line = 0; line < 12000; ++line) { //500000 queries max
 		ostringstream line_out;
-		auto line_len = q_line_len_gen(rd);
+	//	auto line_len = q_line_len_gen(rd);
+    auto line_len = 50;
 		for (size_t i = 0; i < line_len; ++i) {
 			std::uniform_int_distribution<size_t> word_index(0, key_words.size() - 1);
 			line_out << key_words[word_index(rd)];
@@ -284,7 +288,7 @@ int main() {
   RUN_TEST(tr, TestHitcount);
   RUN_TEST(tr, TestRanking);
   RUN_TEST(tr, TestBasicSearch);
-//  TestLoad();
+  //TestLoad();
 }
 
 /*
